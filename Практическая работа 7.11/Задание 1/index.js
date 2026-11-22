@@ -7,28 +7,18 @@ const books = [
   'Отцы и дети'
 ];
 
-const list = document.getElementById('list');
-const addBtn = document.getElementById('add-btn');
-const searchBtn = document.getElementById('search-btn');
+const list = document.querySelector('.list');
+const addBtn = document.querySelector('.btn-add');
+const searchBtn = document.querySelector('.btn-search');
 
-let foundIndex = -1;
+books.forEach((book, i) => {
+  const li = document.createElement('li');
+  li.classList.add('book-item');
+  li.textContent = `${i + 1}) ${book}`;
+  list.appendChild(li);
+});
 
-function renderBooks() {
-  list.innerHTML = '';
-
-  for (let i = 0; i < books.length; i++) {
-    const li = document.createElement('li');
-    li.textContent = `${i + 1}) ${books[i]}`;
-
-    if (i === foundIndex) {
-      li.classList.add('highlight');
-    }
-
-    list.appendChild(li);
-  }
-}
-
-addBtn.addEventListener('click', function () {
+addBtn.addEventListener('click', () => {
   const bookName = prompt('Введите название книги:');
 
   if (!bookName || bookName.trim() === '') {
@@ -37,11 +27,14 @@ addBtn.addEventListener('click', function () {
   }
 
   books.push(bookName.trim());
-  foundIndex = -1;
-  renderBooks();
+
+  const li = document.createElement('li');
+  li.classList.add('book-item');
+  li.textContent = `${books.length}) ${bookName.trim()}`;
+  list.appendChild(li);
 });
 
-searchBtn.addEventListener('click', function () {
+searchBtn.addEventListener('click', () => {
   const searchName = prompt('Введите название книги для поиска:');
 
   if (searchName === null) {
@@ -55,15 +48,14 @@ searchBtn.addEventListener('click', function () {
     return;
   }
 
-  foundIndex = books.findIndex(function (book) {
-    return book.toLowerCase() === query;
-  });
+  const foundIndex = books.findIndex((book) => book.toLowerCase() === query);
 
   if (foundIndex === -1) {
     alert('Книга не найдена!');
+    return;
   }
 
-  renderBooks();
+  const items = document.querySelectorAll('.book-item');
+  items.forEach((item) => item.classList.remove('highlight'));
+  items[foundIndex].classList.add('highlight');
 });
-
-renderBooks();

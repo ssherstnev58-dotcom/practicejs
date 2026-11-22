@@ -1,31 +1,22 @@
 const products = ['Хлеб', 'Молоко', 'Яблоки', 'Сыр', 'Бананы', 'Арбуз'];
 
-const list = document.getElementById('list');
-const addBtn = document.getElementById('add-btn');
+const list = document.querySelector('.list');
+const addBtn = document.querySelector('.btn-add');
 
-function sortProducts() {
-  products.sort(function (a, b) {
-    if (a.toLowerCase() > b.toLowerCase()) {
-      return 1;
-    }
-    if (a.toLowerCase() < b.toLowerCase()) {
-      return -1;
-    }
-    return 0;
-  });
-}
-
-function renderProducts() {
+const renderProducts = () => {
   list.innerHTML = '';
-
-  for (let i = 0; i < products.length; i++) {
+  products.forEach((product, i) => {
     const li = document.createElement('li');
-    li.textContent = `${i + 1}) ${products[i]}`;
+    li.textContent = `${i + 1}) ${product}`;
     list.appendChild(li);
-  }
-}
+  });
+};
 
-addBtn.addEventListener('click', function () {
+const sortProducts = () => {
+  products.sort((a, b) => a.localeCompare(b));
+};
+
+addBtn.addEventListener('click', () => {
   const productName = prompt('Введите название товара:');
 
   if (!productName || productName.trim() === '') {

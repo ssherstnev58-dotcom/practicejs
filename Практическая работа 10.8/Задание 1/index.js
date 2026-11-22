@@ -1,9 +1,9 @@
-const thumbnails = document.querySelectorAll('.thumbnail');
-const fullImageBlock = document.getElementById('full-image-block');
+const thumbnails = document.querySelector('.thumbnails');
+const fullImageBlock = document.querySelector('.full-image-block');
 
-thumbnails.forEach(function (thumb) {
-  thumb.addEventListener('click', function () {
-    const imageUrl = thumb.getAttribute('src');
+thumbnails.addEventListener('click', (e) => {
+  if (e.target.classList.contains('thumbnail')) {
+    const imageUrl = e.target.getAttribute('src');
     fullImageBlock.innerHTML = `<img src="${imageUrl}" alt="Большое фото">`;
-  });
+  }
 });

@@ -1,14 +1,14 @@
-const list = document.getElementById('list');
-const addBtn = document.getElementById('add-btn');
-const removeBtn = document.getElementById('remove-btn');
+const list = document.querySelector('.list');
+const addBtn = document.querySelector('.btn-add');
+const removeBtn = document.querySelector('.btn-remove');
 
-addBtn.addEventListener('click', function () {
+addBtn.addEventListener('click', () => {
   const li = document.createElement('li');
   li.textContent = 'Новый элемент списка';
   list.appendChild(li);
 });
 
-removeBtn.addEventListener('click', function () {
+removeBtn.addEventListener('click', () => {
   const lastItem = list.lastElementChild;
   if (lastItem) {
     lastItem.remove();

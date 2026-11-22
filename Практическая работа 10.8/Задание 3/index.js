@@ -1,36 +1,32 @@
 const prices = [100, 500, 250, 750, 300];
 
-const priceList = document.getElementById('price-list');
-const sortAscBtn = document.getElementById('sort-asc');
-const sortDescBtn = document.getElementById('sort-desc');
+const priceList = document.querySelector('.price-list');
+const sortAscBtn = document.querySelector('.btn-sort-asc');
+const sortDescBtn = document.querySelector('.btn-sort-desc');
 
-function renderPrices() {
+const renderPrices = () => {
   priceList.innerHTML = '';
-  for (let i = 0; i < prices.length; i++) {
+  prices.forEach((price) => {
     const li = document.createElement('li');
-    li.textContent = prices[i];
+    li.textContent = price;
     priceList.appendChild(li);
-  }
-}
-
-function sortAsc() {
-  prices.sort(function (a, b) {
-    return a - b;
   });
-}
+};
 
-function sortDesc() {
-  prices.sort(function (a, b) {
-    return b - a;
-  });
-}
+const sortAsc = () => {
+  prices.sort();
+};
 
-sortAscBtn.addEventListener('click', function () {
+const sortDesc = () => {
+  prices.sort((a, b) => b - a);
+};
+
+sortAscBtn.addEventListener('click', () => {
   sortAsc();
   renderPrices();
 });
 
-sortDescBtn.addEventListener('click', function () {
+sortDescBtn.addEventListener('click', () => {
   sortDesc();
   renderPrices();
 });

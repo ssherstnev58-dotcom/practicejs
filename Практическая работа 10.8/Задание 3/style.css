@@ -9,12 +9,12 @@ body {
   margin: 0 auto;
 }
 
-#price-list {
+.price-list {
   margin-bottom: 15px;
   padding-left: 20px;
 }
 
-#price-list li {
+.price-list li {
   margin-bottom: 6px;
   font-size: 15px;
 }
@@ -24,7 +24,7 @@ body {
   gap: 6px;
 }
 
-button {
+.btn {
   padding: 3px 8px;
   font-size: 13px;
   cursor: pointer;
