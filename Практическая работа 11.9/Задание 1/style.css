@@ -1,0 +1,100 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 40px;
+}
+
+.container {
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-name,
+.input-email,
+.input-comments {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.input-rating {
+  width: 100%;
+}
+
+.radio-label,
+.checkbox-label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.form-group .radio-label {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 3px;
+  min-height: 15px;
+}
+
+.btn-submit {
+  padding: 6px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #f0f0f0;
+}
+
+.btn-submit:hover {
+  background-color: #e4e4e4;
+}
+
+.result-block {
+  margin-top: 25px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: none;
+}
+
+.result-block h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.result-block p {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
