@@ -1,46 +1,46 @@
 const form = document.querySelector('.delivery-form');
-const nameInput = document.querySelector('.input-name');
-const weightInput = document.querySelector('.input-weight');
-const distanceInput = document.querySelector('.input-distance');
 const errorMessage = document.querySelector('.error-message');
-const tbody = document.querySelector('.product-table tbody');
+const tableBody = document.querySelector('.product-table tbody');
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
 
-  const name = nameInput.value.trim();
-  const weight = +weightInput.value.trim();
-  const distance = +distanceInput.value.trim();
+  const formData = new FormData(form);
+  const fields = [...formData.values()];
 
-  if (!name || !weightInput.value.trim() || !distanceInput.value.trim() || isNaN(weight) || weight <= 0 || isNaN(distance) || distance <= 0) {
-    errorMessage.classList.remove('hidden');
-    return;
+  for (let i = 0; i < fields.length; i++) {
+    const field = fields[i].trim();
+
+    if (!isNaN(field)) {
+      if (!field || +field <= 0) {
+        errorMessage.classList.remove('hidden');
+        return;
+      }
+    } else if (!field) {
+      errorMessage.classList.remove('hidden');
+      return;
+    }
   }
 
   errorMessage.classList.add('hidden');
 
+  const weight = +formData.get('weight');
+  const distance = +formData.get('distance');
   const cost = (weight * distance) / 10;
 
-  const tr = document.createElement('tr');
+  const row = document.createElement('tr');
 
-  const tdName = document.createElement('td');
-  tdName.textContent = name;
+  fields.forEach((value) => {
+    const cell = document.createElement('td');
+    cell.textContent = value.trim();
+    row.appendChild(cell);
+  });
 
-  const tdWeight = document.createElement('td');
-  tdWeight.textContent = weight;
+  const costCell = document.createElement('td');
+  costCell.textContent = `${cost.toFixed(2)} руб.`;
+  row.appendChild(costCell);
 
-  const tdDistance = document.createElement('td');
-  tdDistance.textContent = distance;
-
-  const tdCost = document.createElement('td');
-  tdCost.textContent = `${cost.toFixed(2)} руб.`;
-
-  tr.appendChild(tdName);
-  tr.appendChild(tdWeight);
-  tr.appendChild(tdDistance);
-  tr.appendChild(tdCost);
-
-  tbody.appendChild(tr);
+  tableBody.appendChild(row);
 
   form.reset();
 });

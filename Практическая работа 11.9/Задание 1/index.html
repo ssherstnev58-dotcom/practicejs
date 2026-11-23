@@ -12,44 +12,44 @@
     <form class="survey-form">
       <div class="form-group">
         <label class="form-label">Имя пользователя:</label>
-        <input type="text" class="input-name" placeholder="Введите имя">
+        <input type="text" name="name" class="input-name" placeholder="Введите имя" required>
         <div class="error-message error-name"></div>
       </div>
 
       <div class="form-group">
         <label class="form-label">Email:</label>
-        <input type="email" class="input-email" placeholder="example@mail.ru">
+        <input type="email" name="email" class="input-email" placeholder="example@mail.ru" required>
         <div class="error-message error-email"></div>
       </div>
 
       <div class="form-group">
         <label class="form-label">Пол:</label>
         <label class="radio-label">
-          <input type="radio" name="gender" value="Мужской" class="gender-radio" checked> Мужской
+          <input type="radio" name="gender" value="Мужской" class="gender-radio" checked required> Мужской
         </label>
         <label class="radio-label">
-          <input type="radio" name="gender" value="Женский" class="gender-radio"> Женский
+          <input type="radio" name="gender" value="Женский" class="gender-radio" required> Женский
         </label>
       </div>
 
       <div class="form-group">
         <label class="form-label">Оценка сервиса: <span class="rating-display">5</span></label>
-        <input type="range" min="1" max="10" value="5" class="input-rating">
+        <input type="range" name="rating" min="1" max="10" value="5" class="input-rating" required>
       </div>
 
       <div class="form-group">
         <label class="form-label">Интересы пользователя:</label>
         <div class="checkbox-group">
-          <label class="checkbox-label"><input type="checkbox" value="Спорт" class="interest-checkbox"> Спорт</label>
-          <label class="checkbox-label"><input type="checkbox" value="Музыка" class="interest-checkbox"> Музыка</label>
-          <label class="checkbox-label"><input type="checkbox" value="Путешествия" class="interest-checkbox"> Путешествия</label>
-          <label class="checkbox-label"><input type="checkbox" value="Кино" class="interest-checkbox"> Кино</label>
+          <label class="checkbox-label"><input type="checkbox" name="interests" value="Спорт" class="interest-checkbox"> Спорт</label>
+          <label class="checkbox-label"><input type="checkbox" name="interests" value="Музыка" class="interest-checkbox"> Музыка</label>
+          <label class="checkbox-label"><input type="checkbox" name="interests" value="Путешествия" class="interest-checkbox"> Путешествия</label>
+          <label class="checkbox-label"><input type="checkbox" name="interests" value="Кино" class="interest-checkbox"> Кино</label>
         </div>
       </div>
 
       <div class="form-group">
         <label class="form-label">Дополнительные комментарии:</label>
-        <textarea class="input-comments" rows="4"></textarea>
+        <textarea name="comments" class="input-comments" rows="4"></textarea>
       </div>
 
       <button type="submit" class="btn btn-submit">Отправить</button>

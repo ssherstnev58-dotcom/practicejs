@@ -1,75 +1,59 @@
 const form = document.querySelector('.survey-form');
-const nameInput = document.querySelector('.input-name');
-const emailInput = document.querySelector('.input-email');
 const ratingInput = document.querySelector('.input-rating');
 const ratingDisplay = document.querySelector('.rating-display');
-const commentsInput = document.querySelector('.input-comments');
 const errorName = document.querySelector('.error-name');
 const errorEmail = document.querySelector('.error-email');
 const resultBlock = document.querySelector('.result-block');
 
-const validateName = () => {
-  if (!nameInput.value.trim()) {
-    errorName.textContent = 'Имя обязательно для заполнения';
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const validateField = (value, errorText, errorElement, pattern = null) => {
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue) {
+    errorElement.textContent = errorText;
     return false;
   }
-  errorName.textContent = '';
+
+  if (pattern && !pattern.test(trimmedValue)) {
+    errorElement.textContent = 'Некорректный формат email';
+    return false;
+  }
+
+  errorElement.textContent = '';
   return true;
 };
-
-const validateEmail = () => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailInput.value.trim()) {
-    errorEmail.textContent = 'Email обязателен для заполнения';
-    return false;
-  }
-  if (!emailRegex.test(emailInput.value.trim())) {
-    errorEmail.textContent = 'Некорректный формат email';
-    return false;
-  }
-  errorEmail.textContent = '';
-  return true;
-};
-
-nameInput.addEventListener('input', () => {
-  validateName();
-});
-
-emailInput.addEventListener('input', () => {
-  validateEmail();
-});
 
 ratingInput.addEventListener('input', () => {
   ratingDisplay.textContent = ratingInput.value;
 });
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
 
-  const isNameValid = validateName();
-  const isEmailValid = validateEmail();
+  const formData = new FormData(form);
+  const name = formData.get('name');
+  const email = formData.get('email');
+  const gender = formData.get('gender') || 'Не указан';
+  const rating = formData.get('rating');
+  const interests = formData.getAll('interests');
+  const comments = formData.get('comments');
+
+  const isNameValid = validateField(name, 'Имя обязательно для заполнения', errorName);
+  const isEmailValid = validateField(email, 'Email обязателен для заполнения', errorEmail, emailRegex);
 
   if (!isNameValid || !isEmailValid) {
     return;
   }
 
-  const genderRadio = document.querySelector('.gender-radio:checked');
-  const gender = genderRadio ? genderRadio.value : 'Не указан';
-
-  const interestCheckboxes = document.querySelectorAll('.interest-checkbox:checked');
-  const interests = [];
-  interestCheckboxes.forEach((cb) => {
-    interests.push(cb.value);
-  });
-
   resultBlock.style.display = 'block';
   resultBlock.innerHTML = `
     <h2>Данные пользователя:</h2>
-    <p><strong>Имя:</strong> ${nameInput.value.trim()}</p>
-    <p><strong>Email:</strong> ${emailInput.value.trim()}</p>
+    <p><strong>Имя:</strong> ${name.trim()}</p>
+    <p><strong>Email:</strong> ${email.trim()}</p>
     <p><strong>Пол:</strong> ${gender}</p>
-    <p><strong>Оценка сервиса:</strong> ${ratingInput.value}</p>
+    <p><strong>Оценка сервиса:</strong> ${rating}</p>
     <p><strong>Интересы:</strong> ${interests.length ? interests.join(', ') : 'Не выбрано'}</p>
-    <p><strong>Комментарии:</strong> ${commentsInput.value.trim() || 'Нет'}</p>
+    <p><strong>Комментарии:</strong> ${comments.trim() || 'Нет'}</p>
   `;
 });
