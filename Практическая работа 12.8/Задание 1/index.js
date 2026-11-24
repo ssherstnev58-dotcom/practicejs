@@ -21,49 +21,30 @@ const giftArr = [
   }
 ];
 
+const popupOverlay = document.querySelector('.popup-overlay');
+const popupCard = document.querySelector('.popup-card');
+
 const getRandomGift = (gifts) => gifts[Math.floor(Math.random() * gifts.length)];
 
-const createGiftPopup = (gift) => {
-  const overlay = document.createElement('div');
-  overlay.classList.add('popup-overlay');
+const showGiftPopup = (gift) => {
+  popupCard.innerHTML = `
+    <img class="popup-icon" src="${gift.icon}" alt="Подарок">
+    <div class="popup-content">
+      <h2 class="popup-title">${gift.title}</h2>
+      <button type="button" class="popup-button">Отлично!</button>
+    </div>
+  `;
 
-  const card = document.createElement('div');
-  card.classList.add('popup-card');
-
-  const icon = document.createElement('img');
-  icon.classList.add('popup-icon');
-  icon.src = gift.icon;
-  icon.alt = 'Подарок';
-
-  const content = document.createElement('div');
-  content.classList.add('popup-content');
-
-  const title = document.createElement('h2');
-  title.classList.add('popup-title');
-  title.textContent = gift.title;
-
-  const closeButton = document.createElement('button');
-  closeButton.type = 'button';
-  closeButton.classList.add('popup-button');
-  closeButton.textContent = 'Отлично!';
-
-  closeButton.addEventListener('click', () => {
-    overlay.remove();
-  });
-
-  content.appendChild(title);
-  content.appendChild(closeButton);
-
-  card.appendChild(icon);
-  card.appendChild(content);
-
-  overlay.appendChild(card);
-
-  return overlay;
+  popupOverlay.classList.remove('hidden');
 };
+
+popupOverlay.addEventListener('click', (event) => {
+  if (event.target.classList.contains('popup-button')) {
+    popupOverlay.classList.add('hidden');
+  }
+});
 
 setTimeout(() => {
   const randomGift = getRandomGift(giftArr);
-  const popup = createGiftPopup(randomGift);
-  document.body.appendChild(popup);
+  showGiftPopup(randomGift);
 }, 3000);
