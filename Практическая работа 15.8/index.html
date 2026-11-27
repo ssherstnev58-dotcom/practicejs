@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Фильмотека</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <form class="film-form">
+      <div class="form-group">
+        <label class="form-label">Название:</label>
+        <input type="text" name="title" class="form-input" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Жанр:</label>
+        <input type="text" name="genre" class="form-input" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Год:</label>
+        <input type="number" name="releaseYear" class="form-input" required>
+      </div>
+
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="isWatched" class="form-checkbox">
+          Успели посмотреть?
+        </label>
+      </div>
+
+      <button type="submit" class="submit-button">Submit</button>
+      <p class="error-message hidden">Пожалуйста, заполните все поля корректно.</p>
+    </form>
+
+    <div class="controls-bar">
+      <form class="filter-form">
+        <input type="text" name="title" class="filter-input" placeholder="Название фильма">
+        <input type="text" name="genre" class="filter-input" placeholder="Жанр">
+        <input type="text" name="releaseYear" class="filter-input" placeholder="Год релиза">
+        <select name="isWatched" class="filter-select">
+          <option value="">Все</option>
+          <option value="true">Просмотренные</option>
+          <option value="false">Непросмотренные</option>
+        </select>
+      </form>
+      <button type="button" class="delete-all-button">Удалить всё</button>
+    </div>
+
+    <table class="film-table">
+      <thead>
+        <tr>
+          <th>Название</th>
+          <th>Жанр</th>
+          <th>Год</th>
+          <th>Успели посмотреть?</th>
+          <th>Действие</th>
+        </tr>
+      </thead>
+      <tbody class="film-tbody"></tbody>
+    </table>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
