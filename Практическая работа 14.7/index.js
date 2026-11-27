@@ -1,8 +1,4 @@
 const form = document.querySelector('.film-form');
-const titleInput = document.querySelector('.input-title');
-const genreInput = document.querySelector('.input-genre');
-const yearInput = document.querySelector('.input-year');
-const watchedInput = document.querySelector('.input-watched');
 const submitButton = document.querySelector('.submit-button');
 const cancelButton = document.querySelector('.cancel-button');
 const errorMessage = document.querySelector('.error-message');
@@ -52,16 +48,70 @@ const validateFields = (fields) => {
   for (let i = 0; i < fields.length; i++) {
     const field = fields[i];
 
-    if (!isNaN(field)) {
-      if (!field || +field <= 0) {
-        return false;
-      }
-    } else if (!field) {
+    if (!field) {
+      return false;
+    }
+
+    if (!isNaN(field) && +field <= 0) {
       return false;
     }
   }
 
   return true;
+};
+
+const updateFilm = (filmData) => {
+  const updatedFilm = {
+    id: editingFilmId,
+    ...filmData
+  };
+
+  films = films.map((film) => (film.id === editingFilmId ? updatedFilm : film));
+  saveFilms();
+
+  const existingRow = tableBody.querySelector(`tr[data-film-id="${editingFilmId}"]`);
+  if (existingRow) {
+    existingRow.replaceWith(createFilmRow(updatedFilm));
+  }
+
+  resetEditMode();
+};
+
+const deleteFilm = (filmId, row) => {
+  films = films.filter((film) => film.id !== filmId);
+  saveFilms();
+  row.remove();
+
+  if (editingFilmId === filmId) {
+    resetEditMode();
+  }
+};
+
+const startEditFilm = (filmId) => {
+  const film = films.find((item) => item.id === filmId);
+  if (!film) {
+    return;
+  }
+
+  editingFilmId = filmId;
+
+  Object.entries(film).forEach(([key, value]) => {
+    const input = form.querySelector(`[name="${key}"]`);
+    if (!input) {
+      return;
+    }
+
+    if (input.type === 'checkbox') {
+      input.checked = value;
+      return;
+    }
+
+    input.value = value;
+  });
+
+  submitButton.textContent = 'Обновить';
+  cancelButton.classList.remove('hidden');
+  errorMessage.classList.add('hidden');
 };
 
 form.addEventListener('submit', (event) => {
@@ -73,9 +123,7 @@ form.addEventListener('submit', (event) => {
   const releaseYear = formData.get('releaseYear').trim();
   const isWatched = Boolean(formData.get('isWatched'));
 
-  const isValid = validateFields([title, genre, releaseYear]);
-
-  if (!isValid) {
+  if (!validateFields([title, genre, releaseYear])) {
     errorMessage.classList.remove('hidden');
     return;
   }
@@ -83,23 +131,7 @@ form.addEventListener('submit', (event) => {
   errorMessage.classList.add('hidden');
 
   if (editingFilmId !== null) {
-    const updatedFilm = {
-      id: editingFilmId,
-      title,
-      genre,
-      releaseYear,
-      isWatched
-    };
-
-    films = films.map((film) => (film.id === editingFilmId ? updatedFilm : film));
-    saveFilms();
-
-    const existingRow = tableBody.querySelector(`tr[data-film-id="${editingFilmId}"]`);
-    if (existingRow) {
-      existingRow.replaceWith(createFilmRow(updatedFilm));
-    }
-
-    resetEditMode();
+    updateFilm({ title, genre, releaseYear, isWatched });
     return;
   }
 
@@ -130,30 +162,12 @@ tableBody.addEventListener('click', (event) => {
   const filmId = +row.dataset.filmId;
 
   if (event.target.classList.contains('delete-button')) {
-    films = films.filter((film) => film.id !== filmId);
-    saveFilms();
-    row.remove();
-
-    if (editingFilmId === filmId) {
-      resetEditMode();
-    }
+    deleteFilm(filmId, row);
     return;
   }
 
   if (event.target.classList.contains('edit-button')) {
-    const film = films.find((item) => item.id === filmId);
-    if (!film) {
-      return;
-    }
-
-    editingFilmId = filmId;
-    titleInput.value = film.title;
-    genreInput.value = film.genre;
-    yearInput.value = film.releaseYear;
-    watchedInput.checked = film.isWatched;
-    submitButton.textContent = 'Обновить';
-    cancelButton.classList.remove('hidden');
-    errorMessage.classList.add('hidden');
+    startEditFilm(filmId);
   }
 });
 
@@ -161,10 +175,14 @@ sortButton.addEventListener('click', () => {
   const sortField = sortSelect.value;
 
   films.sort((firstFilm, secondFilm) => {
-    if (sortField === 'releaseYear') {
-      return +firstFilm.releaseYear - +secondFilm.releaseYear;
+    const firstValue = firstFilm[sortField];
+    const secondValue = secondFilm[sortField];
+
+    if (!isNaN(firstValue) && !isNaN(secondValue)) {
+      return +firstValue - +secondValue;
     }
-    return firstFilm[sortField].localeCompare(secondFilm[sortField]);
+
+    return firstValue.localeCompare(secondValue);
   });
 
   saveFilms();
